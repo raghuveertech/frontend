@@ -11,6 +11,12 @@ const Tasks = () => {
     });
   }, []);
 
+  const deleteTask = (taskId) => {
+    axios.delete(`http://localhost:5050/tasks/${taskId}`).then((result) => {
+      setTasks(result.data);
+    });
+  };
+
   return (
     <div className="main text-center">
       <div className="header">
@@ -22,8 +28,12 @@ const Tasks = () => {
       <ul className="tasks-list">
         {tasks.map((task) => {
           return (
-            <li>
-              {task.title} <button>Edit</button> <button>Delete</button>{" "}
+            <li key={task._id}>
+              {task.title}{" "}
+              <Link to={`/task/${task._id}`}>
+                <button>Edit</button>
+              </Link>{" "}
+              <button onClick={() => deleteTask(task._id)}>Delete</button>{" "}
             </li>
           );
         })}

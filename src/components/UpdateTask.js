@@ -1,20 +1,21 @@
 import axios from "axios";
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-const AddNewTask = () => {
+const UpdateTask = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const navigate = useNavigate();
+  const { taskId } = useParams();
 
   const submitHandler = (e) => {
     e.preventDefault();
-    const newTask = {
+    const task = {
       title: title,
       description: description,
     };
     axios
-      .post("http://localhost:5050/tasks/add", newTask, {
+      .put(`http://localhost:5050/tasks/${taskId}`, task, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -25,9 +26,23 @@ const AddNewTask = () => {
       });
   };
 
+  useEffect(() => {
+    axios.get(`http://localhost:5050/tasks/${taskId}`).then((result) => {
+      console.log(result.data);
+      const taskData = result.data;
+      setTitle(taskData.title);
+      setDescription(taskData.description);
+    });
+  }, [taskId]);
+
   return (
     <div className="main text-center">
-      <h1>Add New Task</h1>
+      <div className="header">
+        <h1>Update Task</h1>
+        <Link to={"/"}>
+          <button>View All Tasks</button>
+        </Link>
+      </div>
       <form onSubmit={submitHandler}>
         <label htmlFor="title">Title</label>
         <br />
@@ -56,4 +71,4 @@ const AddNewTask = () => {
   );
 };
 
-export default AddNewTask;
+export default UpdateTask;
