@@ -23,16 +23,26 @@ const UpdateTask = () => {
       .then((result) => {
         console.log(result);
         navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert("Something went wrong. Please try again later.");
       });
   };
 
   useEffect(() => {
-    axios.get(`http://localhost:5050/tasks/${taskId}`).then((result) => {
-      console.log(result.data);
-      const taskData = result.data;
-      setTitle(taskData.title);
-      setDescription(taskData.description);
-    });
+    axios
+      .get(`http://localhost:5050/tasks/${taskId}`)
+      .then((result) => {
+        console.log(result.data);
+        const taskData = result.data;
+        setTitle(taskData.title);
+        setDescription(taskData.description);
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert("Something went wrong. Please try again later.");
+      });
   }, [taskId]);
 
   return (

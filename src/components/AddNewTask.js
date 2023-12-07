@@ -22,6 +22,10 @@ const AddNewTask = () => {
       .then((result) => {
         console.log(result);
         navigate("/");
+      })
+      .catch((err) => {
+        console.log(err.message);
+        alert("Something went wrong. Please try again later.");
       });
   };
 
